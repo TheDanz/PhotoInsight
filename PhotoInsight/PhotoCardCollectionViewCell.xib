@@ -22,7 +22,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="150" height="260"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.on.rectangle.angled" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="H9R-ik-aN1">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.on.rectangle.angled" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="H9R-ik-aN1">
                         <rect key="frame" x="0.0" y="0.0" width="150" height="149.33333333333334"/>
                         <color key="tintColor" systemColor="systemBrownColor"/>
                         <constraints>
@@ -73,6 +73,11 @@
                 <constraint firstItem="9h8-EN-xYy" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="gxf-Gt-u5E"/>
                 <constraint firstAttribute="trailing" secondItem="H9R-ik-aN1" secondAttribute="trailing" id="p8h-NP-RRY"/>
             </constraints>
+            <connections>
+                <outlet property="descriptionLabel" destination="9h8-EN-xYy" id="MgJ-4Q-d3P"/>
+                <outlet property="numberOfLikesLabel" destination="oib-sf-jNj" id="grD-Mn-dVY"/>
+                <outlet property="pictureImageView" destination="H9R-ik-aN1" id="1wS-2n-y8U"/>
+            </connections>
             <point key="canvasLocation" x="138.93129770992365" y="19.718309859154932"/>
         </collectionViewCell>
     </objects>
