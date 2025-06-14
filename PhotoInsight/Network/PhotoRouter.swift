@@ -3,12 +3,10 @@ import Foundation
 enum PhotoRouter: URLRequestConvertible {
     case fetch
     
-    private static var publicKey = "tkTejaS4yQN-AcASG6Pa1UmeOPIWerDI_FgNgxihMWk"
-    
     var endpoint: String {
         switch self {
         case .fetch:
-            return "/photos/?client_id=\(PhotoRouter.publicKey)"
+            return "/photos/?client_id=\(UnsplashAPI.publicKey)"
         }
     }
     
