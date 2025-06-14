@@ -5,7 +5,7 @@ class NetworkRepository: NetworkRepositoryProtocol {
         self.networkService = networkService
     }
     
-    func fetchPhotos() async throws -> PhotosResponse {
+    func fetchPhotos() async throws -> [Photo] {
         return try await networkService.fetchPhotos()
     }
 }

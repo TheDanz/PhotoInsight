@@ -1,3 +1,3 @@
 protocol NetworkServiceProtocol {
-    func fetchPhotos() async throws -> PhotosResponse
+    func fetchPhotos() async throws -> [Photo]
 }
