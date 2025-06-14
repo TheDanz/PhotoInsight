@@ -10,7 +10,6 @@ class PhotoCardCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     
     private var imageCache = NSCache<NSString, UIImage>()
-    private let session = URLSession.shared
     
     override func awakeFromNib() {
         super.awakeFromNib()
