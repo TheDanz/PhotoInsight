@@ -16,7 +16,6 @@ final class PhotosListViewController: UIViewController {
     
     lazy var dataLoadingIndicatior = {
         let activityIndicator = UIActivityIndicatorView()
-        activityIndicator.color = .red
         activityIndicator.style = .large
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         return activityIndicator
@@ -44,13 +43,14 @@ final class PhotosListViewController: UIViewController {
     
     private func fetchAndStartAnimatingIndicator() {
         dataLoadingIndicatior.startAnimating()
-        viewModel.fetchPhotos()
+        viewModel.fetchInitialPhotos()
     }
     
     // MARK: - Setup UI
     
     private func setupUI() {
         setupView()
+        setupNavigationBar()
         setupPhotoCollectionView()
         setupDataLoadingIndicatior()
     }
@@ -58,6 +58,18 @@ final class PhotosListViewController: UIViewController {
     private func setupView() {
         view.backgroundColor = .mainBackground
         view.addSubview(photoCollectionView)
+    }
+    
+    private func setupNavigationBar() {
+        self.navigationController?.navigationBar.barTintColor = .mainBackground
+        self.title = "PhotoInsight"
+        if let navigationBar = self.navigationController?.navigationBar {
+            navigationBar.tintColor = .clay
+            navigationBar.titleTextAttributes = [
+                NSAttributedString.Key.font: UIFont(name: "Poppins-SemiBold", size: 20) ?? UIFont.systemFont(ofSize: 20),
+                NSAttributedString.Key.foregroundColor: UIColor.clay
+            ]
+        }
     }
     
     private func setupPhotoCollectionView() {
@@ -94,8 +106,9 @@ extension PhotosListViewController: UICollectionViewDelegate, UICollectionViewDa
         
         cell.configure(
             imageURL: viewModel.photos[indexPath.row].urls.thumb,
-            numberOfLikes: viewModel.photos[indexPath.row].likes,
-            description: viewModel.photos[indexPath.row].description ?? viewModel.photos[indexPath.row].altDescription
+            numberOfLikes: viewModel.photos[indexPath.row].likes ?? 0,
+            description: (viewModel.photos[indexPath.row].description ?? viewModel.photos[indexPath.row].altDescription) ?? "No Description",
+            colorHex: viewModel.photos[indexPath.row].color ?? "#000000"
         )
         
         return cell
@@ -103,7 +116,7 @@ extension PhotosListViewController: UICollectionViewDelegate, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = DetailsViewController(
-            username: viewModel.photos[indexPath.row].user.username,
+            username: viewModel.photos[indexPath.row].user.username ?? "No Name",
             imageURL: viewModel.photos[indexPath.row].urls.regular
         )
         navigationController?.pushViewController(vc, animated: true)
@@ -111,5 +124,12 @@ extension PhotosListViewController: UICollectionViewDelegate, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 150, height: 260)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        if position > (photoCollectionView.contentSize.height - 100 - scrollView.frame.size.height) {
+            viewModel.fetchNextPage()
+        }
     }
 }

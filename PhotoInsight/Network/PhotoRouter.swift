@@ -1,7 +1,7 @@
 import Foundation
 
 enum PhotoRouter: URLRequestConvertible {
-    case fetch
+    case fetch(page: Int, perPage: Int)
     
     var endpoint: String {
         switch self {
@@ -19,13 +19,29 @@ enum PhotoRouter: URLRequestConvertible {
     
     func makeURLRequest() throws -> URLRequest {
         
-        guard let url = URL(string: UnsplashAPI.baseURL + endpoint) else {
-            throw NetworkError.invalidURL
+        let urlString = UnsplashAPI.baseURL + endpoint
+        
+        switch self {
+        case let .fetch(page, perPage):
+
+            guard var urlComponents = URLComponents(string: urlString) else {
+                throw NetworkError.invalidURL
+            }
+            
+            urlComponents.queryItems = [
+                URLQueryItem(name: "client_id", value: UnsplashAPI.publicKey),
+                URLQueryItem(name: "page", value: String(page)),
+                URLQueryItem(name: "per_page", value: String(perPage))
+            ]
+            
+            guard let url = urlComponents.url else {
+                throw NetworkError.invalidURL
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = method
+            
+            return request
         }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = method
-        
-        return request
     }
 }

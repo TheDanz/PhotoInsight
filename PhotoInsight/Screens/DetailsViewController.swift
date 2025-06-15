@@ -9,6 +9,7 @@ final class DetailsViewController: UIViewController {
     
     lazy var fullPictureImageView = {
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -29,14 +30,19 @@ final class DetailsViewController: UIViewController {
     
     // MARK: - Inits
     
-    init(username: String, imageURL: String) {
+    init(username: String, imageURL: String?) {
         super.init(nibName: nil, bundle: nil)
         
         Task {
             title = username
             
+            guard let imageURL else {
+                fullPictureImageView.image = UIImage(systemName: "photo.on.rectangle.angled")
+                return
+            }
+            
             DispatchQueue.main.async {
-                  self.activityIndicator.startAnimating()
+                self.activityIndicator.startAnimating()
             }
             
             guard let url = URL(string: imageURL) else {
@@ -106,9 +112,10 @@ final class DetailsViewController: UIViewController {
     
     func setupNavigationBar() {
         if let navigationBar = self.navigationController?.navigationBar {
-            navigationBar.tintColor = .black
+            navigationBar.tintColor = .clay
             navigationBar.titleTextAttributes = [
-                NSAttributedString.Key.font: UIFont(name: "Poppins-SemiBold", size: 20) ?? UIFont.systemFont(ofSize: 20)
+                NSAttributedString.Key.font: UIFont(name: "Poppins-SemiBold", size: 20) ?? UIFont.systemFont(ofSize: 20),
+                NSAttributedString.Key.foregroundColor: UIColor.clay
             ]
         }
     }

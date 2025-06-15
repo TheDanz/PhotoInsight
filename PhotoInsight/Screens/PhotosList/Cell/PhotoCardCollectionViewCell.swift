@@ -16,11 +16,22 @@ class PhotoCardCollectionViewCell: UICollectionViewCell {
         pictureImageView.layer.cornerRadius = 12
     }
     
-    func configure(imageURL: String, numberOfLikes: Int, description: String) {
+    // MARK: - Cell Configuration
+    
+    func configure(imageURL: String?, numberOfLikes: Int, description: String, colorHex: String) {
         
         Task {
             numberOfLikesLabel.text = "\(numberOfLikes)"
             descriptionLabel.text = description
+            
+            if let color = UIColor(hex: colorHex) {
+                descriptionLabel.textColor = color
+            }
+            
+            guard let imageURL else {
+                pictureImageView.image = UIImage(systemName: "photo.on.rectangle.angled")
+                return
+            }
             
             guard let url = URL(string: imageURL) else {
                 logger.info("Error handle url for image")

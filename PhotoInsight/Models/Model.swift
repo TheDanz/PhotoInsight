@@ -1,8 +1,8 @@
 struct Photo: Codable {
     let description: String?
-    let altDescription: String
-    let color: String
-    let likes: Int
+    let altDescription: String?
+    let color: String?
+    let likes: Int?
     let urls: PhotoURL
     let user: User
     
@@ -16,11 +16,11 @@ struct Photo: Codable {
     }
     
     struct PhotoURL: Codable {
-        let thumb: String
-        let regular: String
+        let thumb: String?
+        let regular: String?
     }
 
     struct User: Codable {
-        let username: String
+        let username: String?
     }
 }
